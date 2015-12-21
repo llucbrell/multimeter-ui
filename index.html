@@ -159,27 +159,29 @@
     </div>
 
 <!-- simple ajax code, call the server to retreve data -->
-<div class="test">Testing serial data display!</div>
-<script type="text/javascript">
-$(function(){
-  for(var i=0; i<200; i++){
-    $.ajax({
-        url: '/echo/json/', //the URL to your node.js server that has data
-        type: 'POST',
-        dataType: 'json',
-        cache: false
-    }).done(function(data){
-        //"data" will be JSON, it's been matched by the server
-        if(data){
-        //put data on the destination
-        $('.test').append('<div>'+data+'</div>');
-        //TODO: make this ajax-call concurrent every 500ms
-      }
-    }); 
-}
-});
+<div>Testing data display..
+<div class="test"></div>
+</div>
 
-    </script>
+<script type="text/javascript">var interval = 500;  // 1000 = 1 second, 3000 = 3 seconds
+function doAjax() {
+    $.ajax({
+            type: 'POST',
+            url: '/echo/json/',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function (data) {
+                    $('.test').html('<div>'+data+'</div>');// first set the value     
+            },
+            complete: function (data) {
+                    // Schedule the next
+                    setTimeout(doAjax, interval);
+            }
+    });
+}
+
+setTimeout(doAjax, interval);</script>
+
 
 </section>
 
@@ -192,13 +194,18 @@ $(function(){
     <script src="../../assets/js/docs.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-
-
-
     <script src="index_files/jquery-1.js"></script>
     <script src="index_files/bootstrap.js"></script>
+
+  <!-- Theme custom
+    ================================================== -->
+    
     <script src="index_files/custom.js"></script>
  
+ <!-- Serial JavaScript browser support and 
+      click interactions
+    ================================================== -->
+    <script type="browser-serial-core.js"></script>
 
 
 </body></html>
