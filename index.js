@@ -53,7 +53,7 @@
                 t          .ifi:::;:;1fft11if;L11LLf1itC8fi   
                    ;  C8LttttCCLttttttttG1ft1f        
                    :         t                             
-                  ;         ;                 Project-->     arduino-UI         
+                  ;         ;                 Project-->     multimeter-UI         
                  L        t                 
                C       t                      Author---> Lucas_C/llucbrell/hobbescode         
                  8    C                       
@@ -69,8 +69,9 @@
 var path= require('path');
 var express= require('express');
 var app= express();
-var dades="";
+var dades={};
 var camino= path.join(__dirname, 'public');
+
 
 // EXPRESS ROUTES FOR GUI
 
@@ -110,18 +111,33 @@ serialPort.on("open", function () {
   console.log('open');
   serialPort.on('data', function(data) { 
     //dades= matchData(JSON.stringify(data));  
-  var dataj =  JSON.stringify(data);
-    if(dataj !== undefined && dataj !== null ){  
-      dades= dataj; 
-    }
+    //we must to parse the data in the server
+
+    
+
+  if(JSON.stringify(data).match(/VOLTAGE.*/) !== null){
+    dades.v=JSON.stringify(data).match(/VOLTAGE.*/); 
+  }
+  if(JSON.stringify(data).match(/REFS.*/) !== null){
+    dades.t=JSON.stringify(data).match(/REFS.*/); 
+  }
+  if(JSON.stringify(data).match(/POWER.*/) !== null){
+    dades.p=JSON.stringify(data).match(/POWER.*/); 
+  }
+  if(JSON.stringify(data).match(/ENERGY.*/) !== null){
+    dades.e=JSON.stringify(data).match(/ENERGY.*/); 
+  }
+
+  
   //show data on the server-console 
-  console.log(data);
+  console.log(dades);
   });
 
 });
 
 //list the TTY ports of the system 
 //uncomment this to localize the arduino-multimeter port
+//remember to comment for a correct running
 /*
 var serialPort = require("serialport");
 serialPort.list(function (err, ports) {

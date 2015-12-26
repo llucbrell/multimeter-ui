@@ -107,7 +107,8 @@
                 <a href="#"><div>
                 <p><i class="material-icons">report_problem</i></p>
                 <h4>Voltmeter!</h4>
-                <strong>Measure the Voltage.</strong>                            
+                <strong>Measure the Voltage.</strong> 
+                <div class="vResult"></div>                           
               </div>
             </div>
           </div> 
@@ -122,6 +123,7 @@
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 <p><p><i class="material-icons">power_settings_new</i></p></p>
                 <strong>Measure power</strong>
+                <div class="pResult"></div>
               </div>
             </div>
             </a>
@@ -133,6 +135,7 @@
               <button type="button" class="close" data-dismiss="alert">×</button>
                <p><p><i class="material-icons">battery_unknown</i></p></p>
                 <strong>Measure energy</strong>
+                <div class="eResult"></div>
               </div>
             </div>
             </a>
@@ -144,6 +147,7 @@
                 <button type="button" class="close" data-dismiss="alert">×</button>
                 <p><p><i class="material-icons">watch_later</i></p></p>
                 <strong>Time references</strong> 
+                <div class="tResult"></div>
               </div>
             </div>
             </a>
@@ -164,6 +168,7 @@
 </div>
 
 <script type="text/javascript">var interval = 500;  // 1000 = 1 second, 3000 = 3 seconds
+var lastData;
 function doAjax() {
     $.ajax({
             type: 'POST',
@@ -171,7 +176,15 @@ function doAjax() {
             data: $(this).serialize(),
             dataType: 'json',
             success: function (data) {
-                    $('.test').html('<div>'+data+'</div>');// first set the value     
+                    //$('.test').html('<div>'+data+'</div>');
+                    // first test for the value
+                    //set the values into the divs
+                   $('.vResult').html('<div>'+data.v+'</div>');
+                   $('.tResult').html('<div>'+data.t+'</div>');
+                   $('.pResult').html('<div>'+data.p+'</div>');
+                   $('.eResult').html('<div>'+data.e+'</div>');
+
+
             },
             complete: function (data) {
                     // Schedule the next
